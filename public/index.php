@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Dotenv\Dotenv;
 use App\Application\Handlers\HttpErrorHandler;
 use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
@@ -11,6 +12,9 @@ use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
@@ -49,6 +53,9 @@ $routes($app);
 
 /** @var SettingsInterface $settings */
 $settings = $container->get(SettingsInterface::class);
+
+$db = $settings->get('db');
+$container->set('db',$db);
 
 $displayErrorDetails = $settings->get('displayErrorDetails');
 $logError = $settings->get('logError');
