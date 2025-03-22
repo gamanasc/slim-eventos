@@ -18,11 +18,11 @@ class SaveAction extends EventAction
             $data['description'],
             $data['datetime'],
             $data['location'],
-            $data['capacity']
+            (int) $data['capacity']
         );
         $eventId = $this->event->save($event);
 
-        $this->logger->info("Event created with ID: `${eventId}`");
+        $this->logger->info("Event created with ID: `{$eventId}`");
 
         return $this->respondWithData("Event created with ID: $eventId");
     }

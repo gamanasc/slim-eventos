@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Event;
+namespace App\Infrastructure\Persistence\Event;
 
 use App\Domain\Event\Event;
 use App\Domain\Event\EventNotFoundException;
