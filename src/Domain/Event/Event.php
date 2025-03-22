@@ -10,16 +10,16 @@ class Event implements JsonSerializable
     private ?int $id;
     private string $name;
     private string $description;
-    private string $date;
+    private string $datetime;
     private string $location;
     private int $capacity;
 
-    public function __construct(?int $id, string $name, string $description, string $date, string $location, int $capacity)
+    public function __construct(?int $id, string $name, string $description, string $datetime, string $location, int $capacity)
     {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
-        $this->date = $date;
+        $this->datetime = $datetime;
         $this->location = $location;
         $this->capacity = $capacity;
     }
@@ -39,9 +39,9 @@ class Event implements JsonSerializable
         return $this->description;
     }
 
-    public function getDate(): string
+    public function getDatetime(): string
     {
-        return $this->date;
+        return $this->datetime;
     }
 
     public function getLocation(): string
@@ -61,7 +61,7 @@ class Event implements JsonSerializable
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'date' => $this->date,
+            'datetime' => $this->datetime,
             'location' => $this->location,
             'capacity' => $this->capacity,
         ];
