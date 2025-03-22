@@ -16,7 +16,25 @@ class EventRepository implements EventRepositoryInterface
     {
         $this->db = $db;
     }
+
+    /**
+    * Retrieves all events from the database.
+    *
+    * @return Event[] An array of Event objects.
+    */
+    public function findAll(): array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM events");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     
+    /**
+    * Saves an event to the database.
+    *
+    * @param Event $data The event data to be saved.
+    * @return int|null The ID of the saved event, or null on failure.
+    */
     public function save(Event $data): ?int {
         $stmt = $this->db->prepare("
             INSERT INTO events (

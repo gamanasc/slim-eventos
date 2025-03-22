@@ -10,6 +10,7 @@ use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 use App\Application\Actions\Event\SaveAction;
+use App\Application\Actions\Event\FindAllAction;
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
@@ -29,5 +30,9 @@ return function (App $app) {
 
     $app->group('/events', function (Group $group) {
         $group->post('', SaveAction::class);
+    });
+
+    $app->group('/events', function (Group $group) {
+        $group->get('', FindAllAction::class);
     });
 };
