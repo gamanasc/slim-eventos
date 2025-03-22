@@ -90,6 +90,35 @@ class EventRepository implements EventRepositoryInterface
             return null;
         }
 
+    }
 
+    public function update(int $id, Event $data): bool {
+        $stmt = $this->db->prepare("
+            UPDATE events SET
+                name = :name,
+                description = :description,
+                datetime = :datetime,
+                location = :location,
+                capacity = :capacity
+            WHERE 
+                id = :id");
+        
+        $name = $data->getName();
+        $description = $data->getDescription();
+        $datetime = $data->getDatetime();
+        $location = $data->getLocation();
+        $capacity = $data->getCapacity();
+
+        $update = $stmt->execute([
+            ':name' => $name,
+            ':description' => $description,
+            ':datetime' => $datetime,
+            ':location' => $location,
+            ':capacity' => $capacity,
+            ':id'       => $id
+        ]);
+
+        return $update;
+        
     }
 }
