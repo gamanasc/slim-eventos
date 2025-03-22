@@ -11,4 +11,11 @@ return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         UserRepository::class => \DI\autowire(InMemoryUserRepository::class),
     ]);
+
+    $containerBuilder->addDefinitions([
+        EventRepositoryInterface::class => function ($container) {
+            $db = $container->get('db');
+            return new EventRepository($db);
+        },
+    ]);
 };
