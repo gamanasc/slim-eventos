@@ -30,9 +30,9 @@ class EventRepository implements EventRepositoryInterface
     }
 
     /**
-    * Retrieves one event from the database, based on the id.
+    * Retrieves a single event from the database based on its ID.
     *
-    * @return Event[] An array of Event objects.
+    * @return Event|null The Event object if found, or null if no event exists with the given ID.
     */
     public function find(int $id): ?Event
     {
