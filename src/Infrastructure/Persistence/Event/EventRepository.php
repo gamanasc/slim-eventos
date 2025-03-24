@@ -92,6 +92,13 @@ class EventRepository implements EventRepositoryInterface
 
     }
 
+    /**
+    * Updates an event in the database.
+    *
+    * @param int $id The id of the event to be updated.
+    * @param Event $data The event data to be updated.
+    * @return bool true or false.
+    */
     public function update(int $id, Event $data): bool {
         $stmt = $this->db->prepare("
             UPDATE events SET
@@ -120,5 +127,24 @@ class EventRepository implements EventRepositoryInterface
 
         return $update;
         
+    }
+
+    /**
+    * Deletes an event in the database.
+    *
+    * @param int $id The id of the event to be deleted.
+    * @return bool true or false.
+    */
+    public function delete(int $id): bool {
+        $stmt = $this->db->prepare("DELETE FROM events WHERE id = :id");
+        $delete = $stmt->execute([
+            ':id'       => $id
+        ]);
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
