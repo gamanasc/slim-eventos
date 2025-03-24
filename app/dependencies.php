@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
+use App\Application\Middleware\ApiKeyMiddleware;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -26,5 +27,11 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+
+        ApiKeyMiddleware::class => function (ContainerInterface $c) {
+            $settings = $c->get(SettingsInterface::class);
+            return new ApiKeyMiddleware($settings->get('api')['key']);
+        },
+
     ]);
 };

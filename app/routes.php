@@ -15,6 +15,8 @@ use App\Application\Actions\Event\DeleteAction;
 use App\Application\Actions\Event\FindAllAction;
 use App\Application\Actions\Event\FindAction;
 
+use App\Application\Middleware\ApiKeyMiddleware;
+
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
@@ -45,7 +47,7 @@ return function (App $app) {
 
     $app->group('/events', function (Group $group) {
         $group->get('', FindAllAction::class);
-    });
+    })->add(ApiKeyMiddleware::class);
 
     $app->group('/events', function (Group $group) {
         $group->get('/{id}', FindAction::class);
