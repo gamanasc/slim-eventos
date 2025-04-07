@@ -53,21 +53,18 @@ return function (App $app) {
     $app->group('/events', function (Group $group) {
         // Rota POST
         $group->post('', SaveAction::class)
-            ->add(new ValitronMiddleware(function($v) {
-                validateFields($v);
-            }));
+            ->add(new ValitronMiddleware(function($v) { validateFields($v); }));
         
         // Rota PUT
         $group->put('/{id}', UpdateAction::class)
-            ->add(new ValitronMiddleware(function($v) {
-                validateFields($v);
-            }));
+            ->add(new ValitronMiddleware(function($v) { validateFields($v); }));
         
         // Rota DELETE
         $group->delete('/{id}', DeleteAction::class);
         
         // Rotas GET
-        $group->get('', FindAllAction::class)->add(ApiKeyMiddleware::class);
+        $group->get('', FindAllAction::class);
         $group->get('/{id}', FindAction::class);
-    });
+    })
+    ->add(ApiKeyMiddleware::class);
 };
