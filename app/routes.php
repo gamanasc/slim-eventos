@@ -33,23 +33,19 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
     });
 
+    // GRUPO DE ROTAS PARA EVENTOS
     $app->group('/events', function (Group $group) {
+        // Rota POST
         $group->post('', SaveAction::class);
-    });
-
-    $app->group('/events', function (Group $group) {
+        
+        // Rota PUT
         $group->put('/{id}', UpdateAction::class);
-    });
-
-    $app->group('/events', function (Group $group) {
+        
+        // Rota DELETE
         $group->delete('/{id}', DeleteAction::class);
-    });
-
-    $app->group('/events', function (Group $group) {
-        $group->get('', FindAllAction::class);
-    })->add(ApiKeyMiddleware::class);
-
-    $app->group('/events', function (Group $group) {
+        
+        // Rotas GET
+        $group->get('', FindAllAction::class)->add(ApiKeyMiddleware::class);
         $group->get('/{id}', FindAction::class);
     });
 };
