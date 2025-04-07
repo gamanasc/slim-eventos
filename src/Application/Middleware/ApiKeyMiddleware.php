@@ -21,17 +21,13 @@ class ApiKeyMiddleware implements Middleware
     
     public function process(Request $request, RequestHandler $handler): Response
     {
-        $authHeader = $request->getHeaderLine('Authorization');
+        $authHeader = $request->getHeaderLine('X-API-Key');
         
         if (empty($authHeader)) {
             return $this->unauthorized('API key not provided');
         }
         
-        if (!preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
-            return $this->unauthorized('Invalid API key format. Use: Bearer {API_KEY}');
-        }
-        
-        $providedKey = $matches[1];
+        $providedKey = $authHeader;
         
         // Verifica se a API key é válida
         if ($providedKey !== $this->apiKey) {

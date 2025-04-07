@@ -34,7 +34,14 @@ return function (ContainerBuilder $containerBuilder) {
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
                     return $pdo;
-                }
+                },
+                'jwt' => [
+                    'secret' => 'secret_value_123456',
+                    'attribute' => 'token',
+                    'secure' => false, // Set to true in production
+                    'relaxed' => ['localhost', 'your-domain.com'],
+                    'algorithm' => ['HS256'],
+                ],
             ]);
         }
     ]);

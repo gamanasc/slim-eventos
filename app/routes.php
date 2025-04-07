@@ -18,7 +18,14 @@ use App\Application\Actions\Event\FindAction;
 use App\Application\Middleware\ApiKeyMiddleware;
 use App\Application\Middleware\ValitronMiddleware;
 
+use App\Application\Middleware\JwtMiddleware;
+
+use App\Application\Actions\Auth\LoginAction; 
+
 return function (App $app) {
+    $container = $app->getContainer();
+    $jwtMiddleware = $container->get(JwtMiddleware::class);
+
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
@@ -33,6 +40,8 @@ return function (App $app) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
     });
+
+    $app->post('/login', LoginAction::class);
 
     // Função de validação para ser reutilizada
     function validateFields($v, $data = null) {
@@ -66,5 +75,6 @@ return function (App $app) {
         $group->get('', FindAllAction::class);
         $group->get('/{id}', FindAction::class);
     })
-    ->add(ApiKeyMiddleware::class);
+    ->add(ApiKeyMiddleware::class)
+    ->add($jwtMiddleware);
 };
