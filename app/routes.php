@@ -16,6 +16,7 @@ use App\Application\Actions\Event\FindAllAction;
 use App\Application\Actions\Event\FindAction;
 
 use App\Application\Middleware\ApiKeyMiddleware;
+use App\Application\Middleware\ValitronMiddleware;
 
 return function (App $app) {
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
@@ -33,13 +34,34 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
     });
 
+    // Função de validação para ser reutilizada
+    function validateFields($v, $data = null) {
+        // Validações comuns
+        $v->rule('required', ['name', 'description', 'datetime', 'location', 'capacity']);
+        $v->rule('lengthMin', 'name', 3);
+        $v->rule('lengthMax', 'name', 500);
+        $v->rule('integer', 'capacity');
+        $v->rule('min', 'capacity', 1);
+
+        // Validação de datetime (apenas se não for nulo)
+        if (isset($data['datetime']) && $data['datetime'] !== null) {
+            $v->rule('dateFormat', 'datetime', 'Y-m-d H:i:s');
+        }
+    }
+
     // GRUPO DE ROTAS PARA EVENTOS
     $app->group('/events', function (Group $group) {
         // Rota POST
-        $group->post('', SaveAction::class);
+        $group->post('', SaveAction::class)
+            ->add(new ValitronMiddleware(function($v) {
+                validateFields($v);
+            }));
         
         // Rota PUT
-        $group->put('/{id}', UpdateAction::class);
+        $group->put('/{id}', UpdateAction::class)
+            ->add(new ValitronMiddleware(function($v) {
+                validateFields($v);
+            }));
         
         // Rota DELETE
         $group->delete('/{id}', DeleteAction::class);
